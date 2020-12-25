@@ -33,7 +33,26 @@ def count_multi_selections(str):
     print(all_selections)
     return all_selections
 
-count_multi_selections('DatabaseWorkedWith')
-count_multi_selections('LanguageWorkedWith')
-count_multi_selections('MiscTechDesireNextYear')
+
+databaseWorkedWith = count_multi_selections('DatabaseWorkedWith')
+
+def generate_multi_selections(list,str):
+    for i in df.index:
+        try:
+            selection = df.loc[i, str]
+            selections = selection.split(';')
+            # print(dbs)
+            for cur_selection in selections:
+                if all_selections.count(cur_selection) == 0:
+                    all_selections.append(cur_selection)
+        except:
+            continue
+    print(all_selections)
+    return all_selections
+
+
+# count_multi_selections('LanguageWorkedWith')
+# count_multi_selections('MiscTechDesireNextYear')
 # count_multi_selections('DatabaseWorkedWith')
+
+df.to_csv('2020_edit.csv', encoding="utf-8", index=False)
