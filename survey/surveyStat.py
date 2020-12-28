@@ -30,13 +30,13 @@ def count_multi_selections(name):
                     all_selections.append(cur_selection)
         except:
             continue
-    print(all_selections)
+    # print(all_selections)
     return all_selections
 
 
 def generate_multi_selections(list, name):
     for selection_in_list in list:
-        df[name + "_" + selection_in_list] = ''
+        df[name + "_" + selection_in_list] = 0
     for i in df.index:
         try:
             # print('in:'+str(i))
@@ -55,57 +55,54 @@ def generate_multi_selections_name(name):
     print(name + " End!")
 
 
-multi_selections_list = ['DatabaseWorkedWith',
-                         'DevType',
-                         'JobFactors',
-                         'LanguageDesireNextYear',
-                         'LanguageWorkedWith'
-                         'MiscTechDesireNextYear',
-                         'MiscTechWorkedWith',
-                         'NEWCollabToolsDesireNextYear',
-                         'NEWCollabToolsWorkedWith',
-                         'NEWJobHunt',
-                         'NEWJobHuntResearch',
-                         'NEWPurchaseResearch',
-                         'NEWSOSites',
-                         'NEWStuck',
-                         'PlatformDesireNextYear',
-                         'PlatformWorkedWith',
-                         'WebframeDesireNextYear',
-                         'WebframeWorkedWith',
-                         'WebframeWorkedWith',
+multi_selections_list = [
+                        'DatabaseDesireNextYear',
+                        # 'DatabaseWorkedWith',
+                         # 'DevType',
+                         # 'JobFactors',
+                         # 'LanguageDesireNextYear',
+                         # 'LanguageWorkedWith',
+                         # 'MiscTechDesireNextYear',
+                         # 'MiscTechWorkedWith',
+                         # 'NEWCollabToolsDesireNextYear',
+                         # 'NEWCollabToolsWorkedWith',
+                         # 'NEWJobHunt',
+                         # 'NEWJobHuntResearch',
+                         # 'NEWPurchaseResearch',
+                         # 'NEWSOSites',
+                         # 'NEWStuck',
+                         # 'PlatformDesireNextYear',
+                         # 'PlatformWorkedWith',
+                         # 'WebframeDesireNextYear',
+                         # 'WebframeWorkedWith',
+                         # 'WebframeWorkedWith',
                          ]
 
-def generate_multi_selections_name(name):
-    selections_list = count_multi_selections(name)
-    generate_multi_selections(selections_list, name)
-    print(name + " End!")
+def generate_multi_all_selections(name_list):
+    for i in df.index:
+        try:
+            for name_in_list in name_list:
+                selection = df.loc[i, name_in_list]
+                selections = selection.split(';')
+                for cur_selection in selections:
+                    df.loc[i, name_in_list + "_" + cur_selection] = 1
+            print(str(i)+" Done!")
+        except:
+            continue
+    return
+
+def generate_multi_selections_dataframe(name_list):
+    all_list = []
+    for name_in_list in name_list:
+        all_list.append(count_multi_selections(name_in_list))
+        print(name_in_list + str(all_list[-1]))
+        for selection_name in all_list[-1]:
+            df[name_in_list + "_" + selection_name] = 0
+    generate_multi_all_selections(name_list)
 
 
-generate_multi_selections_name('DatabaseWorkedWith')
-generate_multi_selections_name('DevType')
-generate_multi_selections_name('JobFactors')
-generate_multi_selections_name('LanguageDesireNextYear')
-generate_multi_selections_name('LanguageWorkedWith')
-generate_multi_selections_name('MiscTechDesireNextYear')
-generate_multi_selections_name('MiscTechWorkedWith')
-generate_multi_selections_name('NEWCollabToolsDesireNextYear')
-generate_multi_selections_name('NEWCollabToolsWorkedWith')
-generate_multi_selections_name('NEWJobHunt')
-generate_multi_selections_name('NEWJobHuntResearch')
-generate_multi_selections_name('NEWPurchaseResearch')
-generate_multi_selections_name('NEWSOSites')
-generate_multi_selections_name('NEWStuck')
-generate_multi_selections_name('PlatformDesireNextYear')
-generate_multi_selections_name('PlatformWorkedWith')
-generate_multi_selections_name('WebframeDesireNextYear')
-generate_multi_selections_name('WebframeWorkedWith')
-generate_multi_selections_name('WebframeWorkedWith')
-
+generate_multi_selections_dataframe(multi_selections_list)
 print("All End!")
 
-# count_multi_selections('LanguageWorkedWith')
-# count_multi_selections('MiscTechDesireNextYear')
-# count_multi_selections('DatabaseWorkedWith')
 
-df.to_csv('2020_edit.csv', encoding="utf-8", index=False)
+df.to_csv('2020_edit_plus.csv', encoding="utf-8", index=False)
